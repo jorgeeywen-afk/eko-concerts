@@ -25,7 +25,7 @@ export default function MemberDashboard() {
   const shown = tab === 'upcoming' ? upcoming : past;
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-zinc-100">Hola, {user?.name} 👋</h1>
         <p className="text-zinc-500 text-sm mt-1">

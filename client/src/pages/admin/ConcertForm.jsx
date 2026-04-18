@@ -115,7 +115,7 @@ export default function ConcertForm() {
   );
 
   return (
-    <div className="p-8 max-w-3xl">
+    <div className="p-4 md:p-8 max-w-3xl">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <button onClick={() => navigate(-1)} className="btn-secondary flex items-center gap-2 text-sm">

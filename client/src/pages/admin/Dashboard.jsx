@@ -38,24 +38,25 @@ export default function AdminDashboard() {
   const past = concerts.filter(c => !isUpcoming(c.date));
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-start justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-100">Conciertos</h1>
+          <h1 className="text-xl md:text-2xl font-semibold text-zinc-100">Conciertos</h1>
           <p className="text-zinc-500 text-sm mt-1">
             {upcoming.length} próximos · {past.length} pasados
           </p>
         </div>
-        <button onClick={() => navigate('/conciertos/nuevo')} className="btn-primary flex items-center gap-2">
+        <button onClick={() => navigate('/conciertos/nuevo')} className="btn-primary flex items-center gap-2 shrink-0">
           <Plus size={16} />
-          Nuevo concierto
+          <span className="hidden sm:inline">Nuevo concierto</span>
+          <span className="sm:hidden">Nuevo</span>
         </button>
       </div>
 
       {/* Search + filters */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="relative flex-1 max-w-sm">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
+        <div className="relative flex-1 sm:max-w-sm">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
           <input
             type="text"
@@ -65,7 +66,7 @@ export default function AdminDashboard() {
             className="pl-9 py-2"
           />
         </div>
-        <div className="flex bg-zinc-900 border border-zinc-800 rounded-lg p-1 gap-1">
+        <div className="flex bg-zinc-900 border border-zinc-800 rounded-lg p-1 gap-1 w-full sm:w-auto">
           {[['all', 'Todos'], ['upcoming', 'Próximos'], ['past', 'Pasados']].map(([val, label]) => (
             <button
               key={val}

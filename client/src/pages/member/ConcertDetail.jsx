@@ -63,12 +63,12 @@ export default function MemberConcertDetail() {
     </div>
   );
 
-  if (!concert) return <div className="p-8 text-zinc-500">Concierto no encontrado.</div>;
+  if (!concert) return <div className="p-4 md:p-8 text-zinc-500">Concierto no encontrado.</div>;
 
   const myInfo = concert.members?.find(m => m.id === user?.id);
 
   return (
-    <div className="p-8 max-w-2xl">
+    <div className="p-4 md:p-8 max-w-2xl">
       <div className="flex items-center gap-4 mb-8">
         <button onClick={() => navigate('/dashboard')} className="btn-secondary flex items-center gap-2 text-sm">
           <ChevronLeft size={16} /> Volver
