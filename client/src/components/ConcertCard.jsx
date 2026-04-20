@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Calendar, Users, ChevronRight } from 'lucide-react';
+import { Calendar, MapPin, Users, ChevronRight } from 'lucide-react';
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
@@ -19,41 +19,49 @@ export default function ConcertCard({ concert, memberCount }) {
   return (
     <button
       onClick={() => navigate(`/conciertos/${concert.id}`)}
-      className="card p-5 text-left hover:border-zinc-700 hover:bg-zinc-800/50 transition-all w-full group"
+      className="card"
+      style={{
+        width: '100%', padding: '16px 20px', textAlign: 'left', cursor: 'pointer',
+        transition: 'border-color .15s, box-shadow .15s', display: 'block',
+      }}
+      onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--ink-3)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,.06)'; }}
+      onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2">
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
             <span className={upcoming ? 'badge-upcoming' : 'badge-past'}>
               {upcoming ? 'Próximo' : 'Pasado'}
             </span>
           </div>
-          <h3 className="font-semibold text-zinc-100 text-lg leading-tight truncate">
+          <h3 style={{ fontFamily: 'Fraunces, serif', fontSize: 20, fontWeight: 500, color: 'var(--ink)', margin: '0 0 2px', letterSpacing: '-.01em' }}>
             {concert.city}
           </h3>
           {concert.venue_name && (
-            <p className="text-zinc-400 text-sm mt-0.5 truncate">{concert.venue_name}</p>
+            <p style={{ fontSize: 13, color: 'var(--ink-2)', margin: '0 0 10px' }}>{concert.venue_name}</p>
           )}
-          <div className="flex items-center flex-wrap gap-3 mt-3">
-            <span className="flex items-center gap-1.5 text-xs text-zinc-500">
-              <Calendar size={12} />
-              {formatDate(concert.date)}
-            </span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+            {concert.date && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--ink-3)' }}>
+                <Calendar size={12} />
+                {formatDate(concert.date)}
+              </span>
+            )}
             {concert.venue_address && (
-              <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--ink-3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}>
                 <MapPin size={12} />
-                <span className="truncate max-w-[200px]">{concert.venue_address}</span>
+                {concert.venue_address}
               </span>
             )}
             {memberCount !== undefined && (
-              <span className="flex items-center gap-1.5 text-xs text-zinc-500">
+              <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, color: 'var(--ink-3)' }}>
                 <Users size={12} />
                 {memberCount} {memberCount === 1 ? 'persona' : 'personas'}
               </span>
             )}
           </div>
         </div>
-        <ChevronRight size={18} className="text-zinc-600 group-hover:text-zinc-400 transition-colors mt-1 shrink-0" />
+        <ChevronRight size={18} style={{ color: 'var(--ink-3)', marginTop: 4, flexShrink: 0 }} />
       </div>
     </button>
   );

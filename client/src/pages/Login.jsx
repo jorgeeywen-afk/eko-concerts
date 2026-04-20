@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Music2 } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -26,21 +25,32 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950 px-4">
-      <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center mb-4">
-            <Music2 size={22} className="text-white" />
+    <div style={{
+      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: 'var(--bg)', padding: '16px'
+    }}>
+      <div style={{ width: '100%', maxWidth: 360 }}>
+        {/* Brand */}
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div style={{
+            width: 52, height: 52, borderRadius: 14,
+            background: 'var(--ink)', color: 'white',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 16px',
+            fontFamily: 'Fraunces, serif', fontSize: 20, fontWeight: 600, fontStyle: 'italic'
+          }}>
+            E
           </div>
-          <h1 className="text-xl font-semibold text-zinc-100">EKO Agency</h1>
-          <p className="text-zinc-500 text-sm mt-1">Gestión de giras</p>
+          <h1 style={{ fontFamily: 'Fraunces, serif', fontSize: 28, margin: '0 0 4px', color: 'var(--ink)' }}>
+            EKO Agency
+          </h1>
+          <p style={{ color: 'var(--ink-2)', fontSize: 14, margin: 0 }}>Gestión de giras</p>
         </div>
 
         {/* Form */}
-        <div className="card p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
+        <div className="card" style={{ padding: 24 }}>
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: 16 }}>
               <label htmlFor="email">Email</label>
               <input
                 id="email"
@@ -52,7 +62,7 @@ export default function Login() {
                 autoFocus
               />
             </div>
-            <div>
+            <div style={{ marginBottom: 16 }}>
               <label htmlFor="password">Contraseña</label>
               <input
                 id="password"
@@ -65,12 +75,16 @@ export default function Login() {
             </div>
 
             {error && (
-              <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2">
+              <div style={{
+                background: 'rgba(180,50,40,.08)', border: '1px solid rgba(180,50,40,.2)',
+                borderRadius: 8, padding: '8px 12px', marginBottom: 16,
+                fontSize: 13, color: '#b43228'
+              }}>
                 {error}
-              </p>
+              </div>
             )}
 
-            <button type="submit" className="btn-primary w-full" disabled={loading}>
+            <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading}>
               {loading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
