@@ -23,7 +23,12 @@ function PrivateRoute({ children, adminOnly = false }) {
 
 function RootRedirect() {
   const { user, loading } = useAuth();
-  if (loading) return null;
+  if (loading) return (
+    <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
+      <div style={{ width: 28, height: 28, border: '2.5px solid var(--accent)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin .7s linear infinite' }} />
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+    </div>
+  );
   if (!user) return <Navigate to="/login" replace />;
   return <Navigate to="/dashboard" replace />;
 }

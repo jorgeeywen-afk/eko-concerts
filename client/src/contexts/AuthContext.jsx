@@ -9,32 +9,49 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
+    // Safety fallback — never stay stuck loading
+    const timeout = setTimeout(() => {
+      if (!cancelled) setLoading(false);
+    }, 5000);
+
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (cancelled) return;
+      clearTimeout(timeout);
       if (session?.user) {
         try {
           const profile = await api.getProfile(session.user.id);
-          setUser({ ...session.user, ...profile });
+          if (!cancelled) setUser({ ...session.user, ...profile });
         } catch {
-          setUser(session.user);
+          if (!cancelled) setUser(session.user);
         }
       }
-      setLoading(false);
+      if (!cancelled) setLoading(false);
+    }).catch(() => {
+      if (!cancelled) setLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (cancelled) return;
       if (session?.user) {
         try {
           const profile = await api.getProfile(session.user.id);
-          setUser({ ...session.user, ...profile });
+          if (!cancelled) setUser({ ...session.user, ...profile });
         } catch {
-          setUser(session.user);
+          if (!cancelled) setUser(session.user);
         }
       } else {
-        setUser(null);
+        if (!cancelled) setUser(null);
       }
+      if (!cancelled) setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+      try { subscription.unsubscribe(); } catch { /* lock already released */ }
+    };
   }, []);
 
   const login = async (email, password) => {
