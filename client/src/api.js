@@ -29,13 +29,16 @@ export const api = {
   login: async (email, password) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     throwIf(error);
-    const { data: profile, error: profileErr } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', data.user.id)
-      .single();
-    throwIf(profileErr);
-    return { user: { ...data.user, ...profile } };
+    try {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', data.user.id)
+        .single();
+      return { user: { ...data.user, ...(profile || {}) } };
+    } catch {
+      return { user: data.user };
+    }
   },
 
   logout: () => supabase.auth.signOut(),
@@ -50,10 +53,22 @@ export const api = {
   getConcerts: async () => {
     const { data, error } = await supabase
       .from('concerts')
-      .select('*')
-      .order('date', { ascending: false });
+      .select(`*, concert_members(id, room, transport_ida, transport_vuelta, profiles(id, name, role))`)
+      .order('date', { ascending: true });
     throwIf(error);
-    return data;
+    return (data || []).map(c => {
+      const members = (c.concert_members || []).map(cm => ({
+        cm_id: cm.id,
+        id: cm.profiles?.id,
+        name: cm.profiles?.name,
+        user_role: cm.profiles?.role,
+        room: cm.room,
+        transport_ida: cm.transport_ida,
+        transport_vuelta: cm.transport_vuelta,
+      }));
+      const { concert_members: _, ...concert } = c;
+      return { ...concert, members };
+    });
   },
 
   getConcert: async (id) => {
@@ -138,10 +153,9 @@ export const api = {
   getMembers: async () => {
     const { data, error } = await supabase
       .from('profiles')
-      .select('id, name, email:id, role, phone, created_at')
+      .select('id, name, email, role, phone, created_at')
       .order('role', { ascending: false });
     throwIf(error);
-    // Get emails from auth — not available via anon key; return profiles without email
     return data;
   },
 

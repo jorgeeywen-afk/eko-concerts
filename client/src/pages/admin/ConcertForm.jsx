@@ -62,7 +62,7 @@ const EMPTY = {
   guest_list: 0, catering: '',
   contact_venue_name: '', contact_venue_phone: '',
   contact_booking_name: '', contact_booking_phone: '',
-  extra_notes: '', status: 'confirmed',
+  extra_notes: '',
 };
 
 export default function ConcertForm() {
@@ -147,13 +147,7 @@ export default function ConcertForm() {
                 <input type="date" value={form.date} onChange={e => set('date', e.target.value)} required />
               </Field>
             </Row>
-            <Field label="Estado">
-              <select value={form.status} onChange={e => set('status', e.target.value)}>
-                <option value="confirmed">Confirmado</option>
-                <option value="pending">Pendiente</option>
-              </select>
-            </Field>
-          </Section>
+            </Section>
 
           {/* Transporte */}
           <Section title="Transporte">

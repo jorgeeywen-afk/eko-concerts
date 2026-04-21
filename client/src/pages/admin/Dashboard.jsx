@@ -374,66 +374,72 @@ export default function AdminDashboard() {
   const Topbar = () => (
     <header style={{
       height: 56, background: 'var(--paper)', borderBottom: '1.5px solid var(--border)',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '0 20px', position: 'sticky', top: 0, zIndex: 40, gap: 12,
+      display: 'flex', alignItems: 'center',
+      padding: '0 12px', position: 'sticky', top: 0, zIndex: 40, gap: 8,
       flexShrink: 0,
     }}>
+      {/* Hamburger (mobile) */}
+      <button
+        onClick={() => setMobileSidebar(v => !v)}
+        className="mobile-menu-btn"
+        style={{
+          display: 'none', background: 'none', border: 'none', cursor: 'pointer',
+          color: 'var(--ink-2)', padding: '6px', borderRadius: 6, flexShrink: 0,
+        }}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+
       {/* Brand */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-        <button
-          onClick={() => setMobileSidebar(v => !v)}
-          style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ink-2)', padding: 4 }}
-          className="mobile-menu-btn"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-        </button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
         <div style={{
-          width: 32, height: 32, borderRadius: 8, background: 'var(--ink)',
+          width: 30, height: 30, borderRadius: 7, background: 'var(--ink)',
           color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: 'Fraunces, serif', fontSize: 14, fontStyle: 'italic', fontWeight: 500,
-          flexShrink: 0,
+          fontFamily: 'Fraunces, serif', fontSize: 13, fontStyle: 'italic', fontWeight: 500,
         }}>E</div>
-        <div style={{ minWidth: 0 }}>
+        <div className="brand-text-desktop">
           <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', lineHeight: 1.2, fontFamily: 'Fraunces, serif' }}>EKO Agency</div>
-          <div style={{ fontSize: 11, color: 'var(--ink-3)', lineHeight: 1.2 }}>Gestión de giras</div>
         </div>
       </div>
 
-      {/* Tabs */}
-      <nav style={{ display: 'flex', background: 'rgba(0,0,0,.04)', borderRadius: 8, padding: 3, gap: 2 }}>
-        {[['cities', 'Ciudades'], ['map', 'Mapa'], ['agenda', 'Agenda']].map(([v, label]) => (
-          <button
-            key={v}
-            onClick={() => setView(v)}
-            style={{
-              padding: '5px 14px', borderRadius: 6, border: 'none', cursor: 'pointer',
-              fontSize: 13, fontWeight: view === v ? 600 : 400,
-              background: view === v ? 'white' : 'transparent',
-              color: view === v ? 'var(--ink)' : 'var(--ink-2)',
-              boxShadow: view === v ? '0 1px 3px rgba(0,0,0,.1)' : 'none',
-              transition: 'all .15s',
-            }}
-          >
-            {label}
-          </button>
-        ))}
+      {/* Tabs — centered */}
+      <nav style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', background: 'rgba(0,0,0,.05)', borderRadius: 8, padding: 3, gap: 2 }}>
+          {[['cities', '🏙 Ciudades', 'Ciudades'], ['map', '🗺 Mapa', 'Mapa'], ['agenda', '📋 Agenda', 'Agenda']].map(([v, labelMobile, labelDesktop]) => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              style={{
+                padding: '5px 10px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                fontSize: 12, fontWeight: view === v ? 600 : 400,
+                background: view === v ? 'white' : 'transparent',
+                color: view === v ? 'var(--ink)' : 'var(--ink-2)',
+                boxShadow: view === v ? '0 1px 3px rgba(0,0,0,.1)' : 'none',
+                transition: 'all .15s', whiteSpace: 'nowrap',
+              }}
+            >
+              <span className="tab-label-mobile">{labelMobile}</span>
+              <span className="tab-label-desktop">{labelDesktop}</span>
+            </button>
+          ))}
+        </div>
       </nav>
 
       {/* Right: nuevo + avatar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        <button className="btn-primary" onClick={() => navigate('/conciertos/nuevo')} style={{ gap: 6 }}>
-          <Plus size={14} />
-          <span style={{ display: 'none' }} className="btn-label-full">Nuevo concierto</span>
-          <span className="btn-label-short">Nuevo</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+        <button className="btn-primary" onClick={() => navigate('/conciertos/nuevo')}
+          style={{ padding: '6px 10px', fontSize: 12 }}>
+          <Plus size={13} />
+          <span className="btn-label-desktop" style={{ marginLeft: 4 }}>Nuevo</span>
         </button>
         <button
-          title={user?.name}
+          title={`${user?.name} · Cerrar sesión`}
           onClick={handleLogout}
           style={{
-            width: 32, height: 32, borderRadius: '50%', background: 'var(--accent-soft)',
+            width: 30, height: 30, borderRadius: '50%', background: 'var(--accent-soft)',
             border: '1.5px solid rgba(194,103,74,.3)', color: 'var(--accent)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            fontSize: 12, fontWeight: 600, cursor: 'pointer', flexShrink: 0,
           }}
         >
           {user?.name?.[0]?.toUpperCase()}
@@ -841,16 +847,21 @@ export default function AdminDashboard() {
 
       {/* Responsive styles */}
       <style>{`
-        @media (max-width: 768px) {
-          .desktop-sidebar { display: none !important; }
-          .mobile-menu-btn { display: flex !important; }
-          .btn-label-full { display: none !important; }
-          .btn-label-short { display: inline !important; }
+        @media (max-width: 640px) {
+          .desktop-sidebar   { display: none !important; }
+          .mobile-menu-btn   { display: flex !important; }
+          .brand-text-desktop{ display: none !important; }
+          .btn-label-desktop { display: none !important; }
+          .tab-label-mobile  { display: inline !important; }
+          .tab-label-desktop { display: none !important; }
         }
-        @media (min-width: 769px) {
-          .desktop-sidebar { display: flex !important; }
-          .btn-label-full { display: inline !important; }
-          .btn-label-short { display: none !important; }
+        @media (min-width: 641px) {
+          .desktop-sidebar   { display: flex !important; }
+          .mobile-menu-btn   { display: none !important; }
+          .brand-text-desktop{ display: block !important; }
+          .btn-label-desktop { display: inline !important; }
+          .tab-label-mobile  { display: none !important; }
+          .tab-label-desktop { display: inline !important; }
         }
       `}</style>
     </div>
